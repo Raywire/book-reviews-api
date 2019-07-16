@@ -23,10 +23,11 @@ class AuthController extends Controller
             'password' => bcrypt($request->password),
         ]);
         $currentUser = ['email' => $email, 'name' => $name ];
+        $statusCode = 201;
 
         $token = auth()->login($user);
 
-        return $this->respondWithToken($token, $currentUser);
+        return $this->respondWithToken($token, $currentUser, $statusCode);
     }
 
     public function login(Request $request)
@@ -38,21 +39,22 @@ class AuthController extends Controller
 
         $credentials = $request->only(['email', 'password']);
         $currentUser = ['email' => $request['email']];
+        $statusCode = 200;
 
         if (!$token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized', 'message' => 'Invalid credentials'], 401);
         }
 
-        return $this->respondWithToken($token, $currentUser);
+        return $this->respondWithToken($token, $currentUser, $statusCode);
     }
 
-    protected function respondWithToken($token, $currentUser)
+    protected function respondWithToken($token, $currentUser, $statusCode)
     {
         return response()->json([
             'user' => $currentUser,
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60
-        ]);
+        ], $statusCode);
     }
 }
