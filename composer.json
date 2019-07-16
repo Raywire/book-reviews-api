@@ -53,6 +53,9 @@
         "test" : [
             "vendor/bin/phpunit --testdox tests"
         ],
+        "seed" : [
+            "php artisan db:seed"
+        ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
