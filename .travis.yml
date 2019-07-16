@@ -1,0 +1,10 @@
+language: php
+php:
+  - 7.1.9
+branches:
+  only:
+    develop
+before_install:
+  - travis_retry composer self-update
+  - composer install
+script: composer test
