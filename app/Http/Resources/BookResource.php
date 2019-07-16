@@ -25,4 +25,13 @@ class BookResource extends JsonResource
             'average_rating' => $this->ratings->avg('rating'),
           ];
     }
+
+    public function with($request)
+    {
+        return [
+            'meta' => [
+                'version' => '1.0.0',
+            ],
+        ];
+    }
 }

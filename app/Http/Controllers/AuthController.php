@@ -38,12 +38,15 @@ class AuthController extends Controller
         ]);
 
         $credentials = $request->only(['email', 'password']);
-        $currentUser = ['email' => $request['email']];
+
         $statusCode = 200;
 
         if (!$token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized', 'message' => 'Invalid credentials'], 401);
         }
+
+        $user = $request->user();
+        $currentUser = ['email' => $user->email, 'name' => $user->name];
 
         return $this->respondWithToken($token, $currentUser, $statusCode);
     }
